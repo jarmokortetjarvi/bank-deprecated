@@ -47,10 +47,12 @@ class MakeLoanRepaymentsCommand extends CConsoleCommand
                  switch($loan->type){
                      case 'fixedRepayment':
                          $repayment = $loan->repayment;
+                         if($repayment >= $saldo) $repayment = $saldo;
                          $instalment = $repayment - $interestPart;
                          break;
                      case 'fixedInstalment':
                          $instalment = $loan->instalment;
+                         if($instalment >= $saldo) $instalment = $saldo;
                          $repayment = $instalment + $interestPart;
                          break;
                      case 'annuity':  
@@ -58,6 +60,7 @@ class MakeLoanRepaymentsCommand extends CConsoleCommand
                          $interval = $this->getInterval( $loan->term_interval );
                          $days = $term*$interval;
                          $repayment = $saldo / $days;
+                         if($repayment >= $saldo) $repayment = $saldo;
                          $instalment = $repayment - $interestPart;
                          break;
                  }
